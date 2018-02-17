@@ -33,6 +33,57 @@ Node* Insert(Node* root, int n){
 	}
 }
 
+Node* Findmin(Node* root){
+	while(root->left != NULL){
+		root = root->left;
+	}
+	return root;
+}
+
+Node* Delete(Node* root, int n){
+	if(root == NULL){
+		return root;
+	}
+	
+	else if(n < root->data){
+		root->left = Delete(root->left, n);
+	}
+	
+	else if(n > root->data){
+		root->right = Delete(root->right, n);
+	}
+	
+	else{
+		if(root->left == NULL && root->right == NULL){
+			delete root;
+			root = NULL;
+		}
+		
+		else if(root->left == NULL){
+			Node* temp;
+			temp = root;
+			root = root->right;
+			delete temp;
+		}
+		
+		else if(root->right == NULL){
+			Node* temp;
+			temp = root;
+			root = root->left;
+			delete temp;
+		}
+		
+		else{
+			Node* temp;
+			temp = Findmin(root->right);
+			root->data = temp->data;
+			root->right = Delete(root->right, temp->data);
+		}
+		
+		return root;
+	}
+}
+
 void Search(Node* root, int n){
 	if(root == NULL){
 		cout<<"Not Found"<<endl;
@@ -169,15 +220,16 @@ int main(){
 	
 	while(1){
 		cout<<"1.Insert"<<endl;
-		cout<<"2.Search"<<endl;
-		cout<<"3.Min"<<endl;
-		cout<<"4.Max"<<endl;
-		cout<<"5.Height"<<endl;
-		cout<<"6.Level Order Traversal"<<endl;
-		cout<<"7.Pre Order Traversal"<<endl;
-		cout<<"8.In Order Traversal"<<endl;
-		cout<<"9.Post Order Traversal"<<endl;
-		cout<<"10.Exit"<<endl;
+		cout<<"2.Delete"<<endl;
+		cout<<"3.Search"<<endl;
+		cout<<"4.Min"<<endl;
+		cout<<"5.Max"<<endl;
+		cout<<"6.Height"<<endl;
+		cout<<"7.Level Order Traversal"<<endl;
+		cout<<"8.Pre Order Traversal"<<endl;
+		cout<<"9.In Order Traversal"<<endl;
+		cout<<"10.Post Order Traversal"<<endl;
+		cout<<"11.Exit"<<endl;
 		
 		cout<<"Enter choice:";
 		cin>>choice;
@@ -190,44 +242,50 @@ int main(){
 				break;
 				
 			case 2:
+				cout<<"Enter data which you want to delete:";
+				cin>>n;
+				root = Delete(root, n);
+				break;
+				
+			case 3:
 				cout<<"Enter data which you want to search:";
 				cin>>n;
 				Search(root, n);
 				break;
 				
-			case 3:
+			case 4:
 				Min();
 				break;
 				
-			case 4:
+			case 5:
 				Max();
 				break;
 				
-			case 5:
+			case 6:
 				height = Height(root);
 				cout<<"Height of the tree is:"<<height<<endl;
 				break;
 				
-			case 6:
+			case 7:
 				Levelordertraversal(root);
 				break;
 				
-			case 7:
+			case 8:
 				Preordertraversal(root);
 				cout<<endl;
 				break;
 				
-			case 8:
+			case 9:
 				Inordertraversal(root);
 				cout<<endl;
 				break;
 				
-			case 9:
+			case 10:
 				Postordertraversal(root);
 				cout<<endl;
 				break;
 				
-			case 10:
+			case 11:
 				exit(0);
 				break;
 				
