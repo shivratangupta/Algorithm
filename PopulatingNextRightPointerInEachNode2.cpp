@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<queue>
+#include<limits.h>
 using namespace std;
 
 struct TreeNode{
@@ -34,27 +35,31 @@ void connect(TreeNode* root){
 	if(root == NULL)
 		return;
 
-	TreeNode *temp, *temp1;
-	temp = root->left;
-	temp1 = root->right;
+	TreeNode* prev = new TreeNode();
+	prev->val = INT_MIN;
+	prev->left = NULL;
+	prev->right = NULL;
+	prev->next = NULL;
 
-	while(temp != NULL && temp1 != NULL){
-		temp->next = temp1;
-		if(temp->right != NULL)
-			temp = temp->right;
+	TreeNode *temp, *curr;
+	curr = root;
+	temp = prev;
 
-		else
-			temp = temp->left;
+	while(curr != NULL){
+		if(curr->left != NULL){
+			temp->next = curr->left;
+			temp = temp->next;
+		}
 
-		if(temp1->left != NULL)
-			temp1 = temp1->left;
+		if(curr->right != NULL){
+			temp->next = curr->right;
+			temp = temp->next;
+		}
 
-		else
-			temp1 = temp1->right;
+		curr = curr->next;
 	}
 
-	connect(root->left);
-	connect(root->right);
+	connect(prev->next);
 }
 
 vector<vector<int> > levelOrderTraversal(TreeNode* root){
@@ -89,7 +94,7 @@ vector<vector<int> > levelOrderTraversal(TreeNode* root){
 		result.push_back(arr);
 	}
 
-	return result;
+	return result;	
 }
 
 int main(){
